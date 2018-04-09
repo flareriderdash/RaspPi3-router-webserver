@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+	<script>
+	var filtered_list;
+	var wifi_list ;
+	var currentwifi = 0;
+	var offset=0;
+	var ap_name="";
+	var pings=["List error, Ping again"];
+	var x="";
+	//PING TEST TOOL
+	generate=function(){pings=pings.reverse();pings.forEach(function(item){
+			delay=1000;
+			stop=Date.now
+			tmp=document.createElement("h6");
+			tmp2=document.createElement("small");
+			tmp.style="padding: 0; margin:0;";
+			tmp2.style="padding: 0; margin:0;";
+			tmp2.innerHTML=item;
+			tmp.appendChild(tmp2);	
+			document.getElementById("pingtest").appendChild(tmp);	
+		});};
+
+	ping=function(){
+		if (document.getElementById("headchild").innerHTML != "Wifi Name: Not Connected"){
+			tmp2=document.getElementById("pingtest");
+			var arr = Array.from(tmp2.childNodes);
+			arr.forEach(function(item){item.parentElement.removeChild(item);});
+			x="8.8.8.8";
+			xhttp=new XMLHttpRequest();	
+			xhttp.onreadystatechange=function(){
+				if(this.readyState == 4 && this.status ==200){
+					pings="";
+					pings=JSON.parse(this.responseText);
+					pings=pings.reverse();
+					pings.shift();
+					pings.shift();
+				}
+			};
+			xhttp.open("GET","/php/index.php?ip="+x,true);
+			xhttp.send();
+			setTimeout(function(){generate()},5000);
+		}else if (document.getElementById("headchild").innerHTML == "Wifi Name: Not Connected"){
+			alert("You are not connected to any network");
+		}
+	};
+	setInterval(function(){
+		var xhr = 0;
+		var xhr2 ="0";
+		var xhr3="0";
+			//WIFI LIST
+			xhr=new XMLHttpRequest();
+			xhr.onreadystatechange = function(){
+				if (xhr.readyState ==4){
+					if (xhr.status ==200){
+						wifi_list = eval("("+ xhr.responseText+")");
+					}
+				}	
+			};
+			//CURRENT WIFI
+			xhr2=new XMLHttpRequest();
+			xhr2.onreadystatechange = function(){
+				if(xhr2.readyState==4){
+					if(xhr2.status==200){
+						currentwifi=JSON.parse(xhr2.responseText);
+					}
+				}
+			};
+			//APNAME
+			xhr3=new XMLHttpRequest();
+			xhr3.onreadystatechange = function(){
+				if (xhr3.readyState==4){
+					if (xhr3.status==200){
+						ap_name=JSON.parse(xhr3.responseText);
+					}
+				}	
+			};
+		xhr.open("GET", "/php/index.php",  true); 
+		xhr.send(null); 
+		xhr2.open("GET","/php/index.php?name=1" , true);
+		xhr2.send(null);
+		xhr3.open("GET","/php/index.php?wifiname=1",true);
+		xhr3.send(null);
+		if (wifi_list.length > 0){
+			filtered_list=wifi_list;
+		}
+		},3000);
+		//function PostForm(ext){ 
+		//	ext.preventDefault();
+		///	var tmp_passbox = this.passwd_box; 
+		//	setTimeout(function(){ 
+		//		tmp_passbox.value=""; 
+		//		},1000); 
+		//	var xhr_term=new XMLHttpRequest(); 
+		//	var url="auth.php"; 
+		//	var params = "connect=Connect&password="+tmp_passbox.value+"+&type="+this.type.value+"&name="+this.name; 
+		//	xhr_term.open("POST",url,true); 
+		//	xhr_term.setRequestHeader("Content-type","application/x-www-form-urlencoded"); 
+		//	xhr_term.onreadystatechange=function(){ 
+		//		if (xhr_term.readyState == 4 && xhr_term.status ==200){ 
+		//		//	alert(xhr_term.responseText); 
+		//		} 
+		//	}; 
+		//	xhr_term.send(params); 
+		//	return false; 
+		//};
+	</script>
+	
+	<title>Router Wifi Setup</title>
+	<script type="text/javascript" src="js/boxClass.js"></script>
+	<style> 
+		body {background-color: black;
+			color: white;
+			background-image : url("setup/back.jpg");
+		}
+		button	{
+			background : white;
+			-webkit-appearance: none;
+			border: 1px solid #999;
+			border-radius: 0;
+			margin-bottom:3px;
+		}
+		input[type=password]{
+			background:white;
+			-webkit-appearance: none;
+			width: 150px;
+			padding:1px;
+			border: 1px solid #999;
+			border-radius: 0;
+		}
+		input[type=submit]{
+			background:white;
+			-webkit-appearance: none;
+			border: 1px solid #999;
+			border-radius: 0;
+		}
+		.header{
+			z-index:1;
+			margin: -9px;
+			padding: 0px;
+			background: black;
+			width: 102%;
+			border-bottom: 1px solid white;
+		}
+		.sticky {
+			position: fixed;
+			top: 9px;
+			width: 100%;
+		}
+		.sticky + .content{
+			padding-top: 67px;
+		}
+		.box{
+			display: inline
+			width: 60%;
+			position: relative;
+			margin-bottom:10px;
+		}
+		.forms{
+			position: absolute;
+			padding-left: 120%;
+		}
+	</style>	
+	</head>
+	<body>
+		<div class="header" id="myheader">
+			<h3 id="headchild" style="margin-bottom:5px; display:inline;">Wifi Name: </h3>
+			<div id="pingtest" style="font-size:small;float : right; margin-right: 3%;padding:0px;">
+			</div>
+			<button id="pingbtn" style="background:white;float: right;margin-top : 2px;margin-right:15px;" onclick="ping()"><small>Ping Test <br>From AP</small></button>
+			<!--<button id="disbtn" style="display:inline;margin-left:20px;" onclick="disconnect()">Disconnect</button>-->
+			<h3 id="headchild2" style="margin-top:5px;margin-bottom:5px;">AP Name: </h3>
+
+		<script type="text/javascript" src="js/header.js">
+		</script>
+		</div>
+		<div class="content">
+		<div id="container" style="margin-top:15px;"></div>
+		</div>
+
+<!-- box template <div id="box" class="box">
+			<div style="padding-left:10px;margin-left:15px;float:left;background:white;width:60%;color: black;border-radius:5px;">
+				<p style="margin:0;padding:0;">google</p>
+			</div>
+			<div style="margin-left:75%;">
+				<form id="form">
+					<input type="text">
+					<input type="submit">
+				</form>
+			</div>
+			</div>
+		</div>
+-->
+		<script type="text/javascript" src="js/boxupdate.js">	
+		</script>
+		<script type="text/javascript" src="js/divcreate.js">
+		</script>
+		<script type="text/javascript" src="js/endfile.js">
+		</script>
+	</body>
+</html>

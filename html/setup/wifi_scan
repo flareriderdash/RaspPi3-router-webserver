@@ -1,0 +1,14 @@
+# THIS FILE IS TO WORK WITH THE
+# SERVICE 'WIFI_SCAN' AND TO SEND THE DATA THROUGH
+# PYTHON DATA SORTING SOFTWARE. THIS FILE ALSO IS
+# TO GATHER THE CURRENT WIFI NETWORK CONNECTED TO
+# OR NOTIFY IF NOT.
+
+while :
+do
+    sleep 5
+        iwlist wlan0 scan | /var/www/html/setup/wilist_sort
+		iwconfig wlan2 | grep ESSID  | awk -F ":" {'print $2'} | cut -d '"' -f2 > /var/www/html/setup/currentwifi
+done &
+echo $! > /var/run/wifi_scan.pid
+exit 0

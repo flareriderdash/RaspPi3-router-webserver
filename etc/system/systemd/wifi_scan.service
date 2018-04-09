@@ -1,0 +1,11 @@
+[Unit]
+Description=Wifi Scan
+After=network.target systemd-tmpfiles-setup.service
+
+[Service]
+Type=forking
+ExecStart=/bin/bash /var/www/html/setup/wifi_scan
+PIDFile=/var/run/wifi_scan.pid
+
+[Install]
+WantedBy=default.target

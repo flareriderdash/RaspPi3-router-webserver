@@ -1,0 +1,48 @@
+#!/usr/bin/python
+
+import sys
+import os
+
+def get_ap_name():
+	ssid_tmp=""
+	passphrase=""
+	hostapd_file=open("/etc/hostapd/hostapd.conf","r")
+	hostapd_file_data=hostapd_file.read().splitlines()
+	for i in hostapd_file_data:
+		if "ssid" in i:
+			ssid_tmp+=i.split("=")[1]
+		if "wpa_passphrase" in i:
+			passphrase=i.split("=")[1]	
+	apname=open("/var/www/html/setup/APNAME","w+")
+	try:
+		apname.write(ssid_tmp+';'+passphrase)
+	except:
+		apname.write(ssid_tmp)	
+	return ssid_tmp
+
+fullstring=""
+ap_name=get_ap_name()
+ssidlist=[]
+
+file=open("/var/www/html/setup/wifinets","w+")
+for i in sys.stdin:
+	fullstring+=i
+fullstring=fullstring.split("Cell")
+
+for i in fullstring:
+	if 'ESSID:""' not in i and "Scan completed :" not in i:
+		if "\\x00" not in i.split("ESSID:")[1].splitlines()[0] :
+			ssid=i.split("ESSID:")[1].splitlines()[0].strip('"')
+			if "\\xE2\\x80\\x99" in ssid :
+				ssid = ssid.replace("\\xE2\\x80\\x99","'")
+			if "WPA Version" in i and ssid not in ssidlist and ssid != ap_name or "WPA2 Version" in i and ssid not in ssidlist and ssid != ap_name:
+				file.write(ssid+";"+"WPA\n")
+			elif ssid not in ssidlist and ssid != ap_name:
+				file.write(ssid+";"+"OPEN\n")
+			ssidlist.append(ssid)
+		else:
+			continue
+	else:
+		pass
+file.close()
+	
