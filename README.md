@@ -37,6 +37,7 @@ etc/dnsmasq.d/ contents:
 
 etc/hostapd/ contents:
   -The AP config file 
+
 -----------------------------------------------------------------------------------------------------------------------------
 Also you need to add these few entries into the sudoers files to allow the webserver to run these programs without root access
 (do this using the "visudo" command while root)
@@ -55,6 +56,7 @@ run "update-rc.d enable wifi_scan 2 3 4 5" as root to allow the wifi scanning at
 And run "update-rc.d enable dnsmasq 2 3 4 5" as root to allow for the dhcp server to start at boot
 
 BUGS-------------------------
+
 The scaling on the connect button when the corresponding wifi network is of the type "OPEN"
 doesn't match up with the connect and password fields when the type is "WPA" on many web broswer
 with different resultions specifically when the width of the screen is different
