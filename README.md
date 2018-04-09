@@ -24,6 +24,7 @@ etc/dnsmasq.d/ -> /etc/dnsmasq.d/
 
 etc/hostapd/ -> /etc/hostapd/
 
+---------------------------------------------------------------------------------------------------------------------------
 etc/system/systemd/ contents:
   
   - A custom "service" or "systemctl" "script" that initiates the constant wifi scan and sorting
