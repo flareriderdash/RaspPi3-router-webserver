@@ -18,7 +18,7 @@ html/ -> /var/www/
 
 etc/system/systemd -> /etc/system/
 
-lib/dhcpcd/dhcpcd-hooks -> lib/dhcpcd/
+lib/dhcpcd/dhcpcd-hooks -> lib/dhcpcd/dhcpcd-hooks
 
 etc/dnsmasq.d/ -> /etc/dnsmasq.d/
 
