@@ -67,6 +67,8 @@ run the two below commands as root to allow the constant wifi scanning and the d
     update-rc.d enable wifi_scan 2 3 4 5     
     update-rc.d enable dnsmasq 2 3 4 5 
 
+And now connect to http://10.1.1.1 (the gateway) and you'll end up at the page
+
 BUGS-------------------------
 
 The scaling on the connect button when the corresponding wifi network is of the type "OPEN"
