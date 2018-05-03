@@ -79,7 +79,7 @@ error and an instruction to press again then it should work properly.Also the te
 on some resultions due to my incompetence to make the resulting "ping test text" bigger without it overflowing the 
 header portion of the website
 
-Webiste uses http and has no certifercate verification. although, I didn't expect you to use it on a typical laptop ;)
+Webiste uses http and has no certifercate verification and there is a php injection in the password enter boxes. although, I didn't expect you to use it on a typical webserver ;)
 
 The wifi scaning portion I had to make a bit janky with the systemctl service as there was no other reliable way I could
 find to make it so I could initiate the scaning process from the php code. so I made it two parts. The website. And the 
